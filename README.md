@@ -1,6 +1,6 @@
-# rts
+# Configuration craft item Star Atlas
 
-This template should help get you started developing with Vue 3 in Vite.
+This project for community for manage resources this metaverse
 
 ## Recommended IDE Setup
 

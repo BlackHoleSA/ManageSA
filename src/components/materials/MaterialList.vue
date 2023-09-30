@@ -16,7 +16,12 @@
                     <div class="card" v-for="part of partNft.ingredients">
                         <div class="card-header">{{part.name}}</div>
                         <img :src="part.image" class="card-img-top maximage" alt="...">
-                        
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputAmmount">Quantity for crafting</label>
+                                <input type="number" class="form-control" id="inputAmmount" v-model="part.quantity"  placeholder="Quantity">
+                            </div>
+                        </div>
                     </div>
                     
                 </div>
@@ -101,7 +106,6 @@ const addIngredient = (nft: Nft) => {
         partNft.value.ingredients!.push(cloneNft);
     }
 
-    //stateRtsSA.addIngredientToNft(partNft.value,)
 }
 
 const addEditNft=(part: Nft)=>{

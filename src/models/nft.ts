@@ -14,5 +14,5 @@ export interface Nft{
     ingredients?: Nft[];
     x?:number;
     y?:number;
-    
+    quantity?:number; // quantity for crafting
 }
