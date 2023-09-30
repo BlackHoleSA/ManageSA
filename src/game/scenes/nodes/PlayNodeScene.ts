@@ -137,8 +137,30 @@ export default class PlayNodeScene extends Scene {
 
     //const talentData=this.stateRtsSA.getShips();
     const editNft=this.stateRtsSA.getEditNft();
+    const totalGroupMaterialRaw= this.stateRtsSA.getTotalMaterialRaw();
+    console.log(totalGroupMaterialRaw);
+    let resultResourceraw='Recursos Necesarios para el crafteo { ';
+    if(totalGroupMaterialRaw!=null){
+      for (const symbol in totalGroupMaterialRaw) {
+        console.log(`${symbol} : ${totalGroupMaterialRaw[symbol]}`);
+        resultResourceraw+=`${symbol} : ${totalGroupMaterialRaw[symbol]} `
+      }
+    }
+
+    resultResourceraw+= " }";
+
     if(editNft){
-      this.disabledKeyBoard=false;
+      //this.disabledKeyBoard=false;
+      const btnIniciar =  this.add.text(300,0, resultResourceraw, {
+        fontSize: '16px',
+        //backgroundColor: '#0c09c8',
+        padding: {
+          x: 10,
+          y: 10
+        },
+      });
+      
+      
       this.createNode(editNft);
     }
       

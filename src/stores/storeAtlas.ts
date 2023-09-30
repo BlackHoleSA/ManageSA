@@ -38,7 +38,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   const getNft=()=>{return stateAtlas.selected};
   const getEditNft=()=>{return stateAtlas.editNft};
   const getPartComponent=()=>{return stateAtlas.partComponent};
-    
+  const getTotalMaterialRaw=()=>stateAtlas.editNft ? sumValuesBySymbolGroups(stateAtlas.editNft): null;
   
   
     
@@ -90,6 +90,52 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     return false; // La receta deseada no se encontró en esta receta ni en sus subrecetas
   }
 
+
+  const groupLeafNodesBySymbol=(node: Nft): Record<string, Nft[]> =>{
+    if (node.ingredients!.length === 0) {
+      return { [node.symbol]: [node] }; // Si el nodo no tiene hijos, lo agrupa por "symbol"
+    } else {
+      let groupedNodes: Record<string, Nft[]> = {};
+      for (const child of node.ingredients!) {
+        const childGroups = groupLeafNodesBySymbol(child); // Llama recursivamente para los hijos
+        for (const symbol in childGroups) {
+          if (groupedNodes[symbol]) {
+            groupedNodes[symbol] = groupedNodes[symbol].concat(childGroups[symbol]);
+          } else {
+            groupedNodes[symbol] = childGroups[symbol];
+          }
+        }
+      }
+      return groupedNodes;
+    }
+  }
+
+  const   sumValuesBySymbolGroups=(node: Nft): Record<string, number> =>{
+    if(node.ingredients==undefined){
+      node.ingredients=[];
+    }
+
+    if (node.ingredients!.length === 0) {
+      return { [node.name]: node.quantity??1 }; // Si el nodo no tiene hijos, devuelve su valor en un objeto
+    } else {
+      let groupedSums: Record<string, number> = {};
+      for (const child of node.ingredients!) {
+        const childSums = sumValuesBySymbolGroups(child); // Llama recursivamente para los hijos
+        for (const symbol in childSums) {
+          if (groupedSums[symbol]) {
+            groupedSums[symbol] += childSums[symbol];
+          } else {
+            groupedSums[symbol] = childSums[symbol];
+          }
+        }
+      }
+      return groupedSums;
+    }
+  }
+
+
+
+
   const setShowComposition=(sw:boolean)=>stateAtlas.showComposition=sw;
   const setShowConfig=(sw:boolean)=>stateAtlas.showConfig=sw;
 
@@ -108,6 +154,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     getShowConfig,
     getEditNft,
     getPartComponent,
+    getTotalMaterialRaw,
     
 
     //ACTIONS
