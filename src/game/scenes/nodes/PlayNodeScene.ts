@@ -28,7 +28,7 @@ export default class PlayNodeScene extends Scene {
 
   preload() {
     
-    this.assets=this.stateRtsSA.getCraftShips().concat(this.stateRtsSA.getResources());
+    this.assets=this.stateRtsSA.getNfts();
     //this.assets=this.stateRtsSA.getCraftShips() ;
     //this.assets=this.stateRtsSA.getResourceMaterialRaw();
 
@@ -50,14 +50,14 @@ export default class PlayNodeScene extends Scene {
     this.assets.forEach((item, index) => {
       const nft = new MaterialSA(this, 100, (index + 1) * 100, item,'MATERIALSA', () => {
         
-        this.stateRtsSA.setEditNft(item);
+        this.stateRtsSA.setEditNftByid(item.id);
 
-        const editNft=this.stateRtsSA.getEditNft();
-        if(editNft){
+        //const editNft=this.stateRtsSA.getEditNft();
         
-          this.createJson();
+        //this.stateRtsSA.updateNftComponent();
+        this.createJson();
         
-        }
+        
       });
 
     });
@@ -107,10 +107,11 @@ export default class PlayNodeScene extends Scene {
   update() {
     
       if((this.cursors && this.cursors.up.isDown==true) /* || ( this.keyW && this.keyW.isDown) */ ){
-        this.cameras.main.scrollY += this.cameraSpeed;
+        this.cameras.main.scrollY -= this.cameraSpeed;
+        
       }
       if((this.cursors && this.cursors.down.isDown==true) /* || (this.keyS && this.keyS.isDown) */){
-        this.cameras.main.scrollY -= this.cameraSpeed;
+        this.cameras.main.scrollY += this.cameraSpeed;
       }
       if((this.cursors && this.cursors.right.isDown==true) /* || (this.keyD && this.keyD.isDown) */){
         this.cameras.main.scrollX += this.cameraSpeed;
@@ -136,14 +137,15 @@ export default class PlayNodeScene extends Scene {
     });
 
     //const talentData=this.stateRtsSA.getShips();
+    
     const editNft=this.stateRtsSA.getEditNft();
     const totalGroupMaterialRaw= this.stateRtsSA.getTotalMaterialRaw();
     console.log(totalGroupMaterialRaw);
-    let resultResourceraw='Recursos Necesarios para el crafteo { ';
+    let resultResourceraw='Recursos Necesarios  { \n ';
     if(totalGroupMaterialRaw!=null){
       for (const symbol in totalGroupMaterialRaw) {
         console.log(`${symbol} : ${totalGroupMaterialRaw[symbol]}`);
-        resultResourceraw+=`${symbol} : ${totalGroupMaterialRaw[symbol]} `
+        resultResourceraw+=`${symbol} : ${totalGroupMaterialRaw[symbol]}\n `
       }
     }
 
@@ -333,10 +335,17 @@ export default class PlayNodeScene extends Scene {
     }
   }
 
-  openConfigWindow(){
-    
+  openConfigWindow(){    
     this.stateRtsSA.setShowConfig(true);
-    //this.disabledKeyBoard=true;
+  }
+  openUpdateComponent(){    
+    this.stateRtsSA.setShowComponent(true);
+  }
+
+  updateNftComponent(){
+    this.stateRtsSA.updateNftComponent();
+    this.createJson();
+
   }
 
 }

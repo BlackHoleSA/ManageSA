@@ -39,8 +39,23 @@ export class BtnControls extends Phaser.GameObjects.Container{
         })
         .setInteractive()
         .on('pointerup', () => {
-          console.log('Botón de inicio clickeado');
-          alert('hola');
+          console.log('Actualizar ingredientes de un componentes');
+          scene.openUpdateComponent();
+          
+        });
+
+        const btnUpdateMaterial =  scene.add.text(500,0, 'Actualizar Material', {
+          fontSize: '16px',
+          backgroundColor: '#3498db',
+          padding: {
+            x: 10,
+            y: 10
+          }
+        })
+        .setInteractive()
+        .on('pointerup', () => {
+          
+          scene.updateNftComponent();
         });
       
       this.add([btnIniciar, btnCrearComponente,]);

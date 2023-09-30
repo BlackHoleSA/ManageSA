@@ -7,34 +7,41 @@ import { uniqueID } from '@/utils/uniqueID';
 
 
 interface State {
-  items: Nft[];
+  items: Nft[]; 
+  //materials:Nft[];//compount, material , material raw and ships
   selected?: Nft;
   editNft: Nft | undefined;
   partComponent?:Nft;
   showComposition: boolean;
   showConfig: boolean
+  showUpdateComponent:boolean;
   message?: string;
 }
 
 export const useStoreAtlas = defineStore('staratlas',()=> {
   /**STATE */
+  const SHIPSYMBOLS=["CALMAX","FBLMEX","VZUSSO","FBLBBU","PX4","FBLMAM"];
   const stateAtlas = reactive<State>({
     items:[],
+    //materials:[],
     selected: undefined,
     editNft: undefined,
     partComponent:undefined,
     showComposition: false,
+    showUpdateComponent:false,
     showConfig: false
   });
 
   /**GETTERS */
   const getNfts=(search:string='')=>search=='' ? stateAtlas.items : stateAtlas.items.filter(item=>item.name.toUpperCase().includes(search.toUpperCase()));
   const getResources=()=>stateAtlas.items.filter(item=>item.attributes.category=="resource");
-  const getResourceMaterialRaw=()=>stateAtlas.items.filter(item=>item.attributes.category=="resource" && item.attributes.class=="raw material");
-  const getCraftShips=()=>stateAtlas.items.filter(item=>["CALMAX","FBLMEX","VZUSSO","X4YT0","PX4","FBLMAM"].includes(item.symbol));
+  const getResourceMaterialRaw=()=>stateAtlas.items.filter(item=>item.attributes.class=="raw material");
+  const getComponents=()=>stateAtlas.items.filter(item=>item.attributes.class!="raw material" && item.attributes.class!="ship" && !SHIPSYMBOLS.includes(item.symbol));
+  const getCraftShips=()=>stateAtlas.items.filter(item=>SHIPSYMBOLS.includes(item.symbol));
 
   const getShowComposition=()=>{return stateAtlas.showComposition};
   const getShowConfig=()=>{return stateAtlas.showConfig};
+  const getShowComponent=()=>{return stateAtlas.showUpdateComponent};
   const getNft=()=>{return stateAtlas.selected};
   const getEditNft=()=>{return stateAtlas.editNft};
   const getPartComponent=()=>{return stateAtlas.partComponent};
@@ -46,21 +53,38 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   const loadNftSA=()=>{
       fecthResourceSA('raw material').then(res=>{
         if(res instanceof Array){
-          stateAtlas.items=res;
+
+          stateAtlas.items=res.filter(item=>
+              SHIPSYMBOLS.includes(item.symbol) ||
+              item.attributes.category=="resource" 
+          );
+
+          //stateAtlas.materials=stateAtlas.items.filter(item=>item.attributes.category=="resource");
         }
       });
     };
   
   const setEditNft=(nft:Nft)=>{
-    if(nft.attributes.category=="ship"){
+    
+    if(nft.attributes.category!="material raw"){
+      updateRecursive(nft);
       if(nft.part_id==null){
         nft.part_id=uniqueID();
       }
       stateAtlas.editNft=nft;
+      //
     }else{
       stateAtlas.message='No se puede editar este nft';
     }
     
+  }
+
+  const setEditNftByid=(nft_id: string)=>{
+    const index = stateAtlas.items.findIndex(item=>item.id==nft_id);
+      if(index>-1){
+        setEditNft(stateAtlas.items[index]);
+        
+      }
   }
 
   const setEditPart=(nft:Nft)=>{
@@ -89,6 +113,39 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   
     return false; // La receta deseada no se encontró en esta receta ni en sus subrecetas
   }
+
+
+  const updateNftComponent=()=>{
+    if(stateAtlas.editNft!=undefined){
+      updateRecursive(stateAtlas.editNft!);
+      
+      const index = stateAtlas.items.findIndex(item=>item.id==stateAtlas.editNft!.id);
+      if(index>-1){
+        stateAtlas.items[index]=stateAtlas.editNft!
+      }
+      
+    }
+    
+  }
+
+
+  const  updateRecursive=(nft: Nft): void =>{
+    
+    if(nft.ingredients==undefined){
+      nft.ingredients=[];
+    }
+    nft.ingredients.forEach(item=>{
+      if(nft.quantity==undefined){
+        nft.quantity=1;
+      }
+      if( typeof (item.qtyRequired as any) === 'string'){
+        item.qtyRequired=Number.parseInt(`${item.qtyRequired}`);
+      }
+      item.quantity = nft.quantity * item.qtyRequired;
+      updateRecursive(item);
+    })
+    
+}
 
 
   const groupLeafNodesBySymbol=(node: Nft): Record<string, Nft[]> =>{
@@ -134,12 +191,16 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   }
 
 
+  
 
 
   const setShowComposition=(sw:boolean)=>stateAtlas.showComposition=sw;
   const setShowConfig=(sw:boolean)=>stateAtlas.showConfig=sw;
+  const setShowComponent=(sw:boolean)=>stateAtlas.showUpdateComponent=sw;
 
   const downloadNftEditAsJson = (filename:string= "miarchivo.json")=>downloadJson(stateAtlas.editNft,filename);
+
+  const downloadComponentsAsJson = (filename:string= "materialsAndShips.json")=>downloadJson(stateAtlas.items,filename);
 
 
   return {
@@ -150,20 +211,26 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     getResourceMaterialRaw,
     getResources:getResources,
     getCraftShips,
+    getComponents,
     getShowComposition,
     getShowConfig,
+    getShowComponent,
     getEditNft,
     getPartComponent,
     getTotalMaterialRaw,
+
     
 
     //ACTIONS
     loadNftSA,
     setEditNft,
+    setEditNftByid,
     setEditPart,
     setShowComposition,
     setShowConfig,
+    setShowComponent,
     addIngredientToNft,
-    downloadNftEditAsJson
+    downloadNftEditAsJson,
+    updateNftComponent
   }
 })

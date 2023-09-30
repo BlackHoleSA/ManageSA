@@ -2,10 +2,11 @@
     <Modal :show="showComposition" :header="true" :stylemodal="'modal-xl'"
         @onchange="stateRtsSA.setShowComposition($event)">
         <template v-slot:header>
-            <div class="d-flex ms-2">
-                <h5 class="ms-0" v-if="partNft">
-                    Compositions {{ partNft.name }} units {{ partNft.quantity }}
+            <div class="d-flex ms-2" v-if="partNft">
+                <h5 class="ms-0" >
+                    Compositions {{ partNft.name }} units {{ partNft.quantity }}  
                 </h5>
+                <button class="btn btn-primary btn-sm ms-3" @click="setEditComponent(partNft)">Editar componente</button>
             </div>
         </template>
 
@@ -20,7 +21,7 @@
                             <div class="form-group">
                                 <label for="inputForUnit">Required for unit.</label>
                                 {{part.qtyRequired}}
-                                <input type="text" class="form-control" id="inputForUnit" v-model="part.qtyRequired" v-on:keyup="changeIngredient(index,part.qtyRequired)"  placeholder="Quantity for unit">
+                                <input type="number" class="form-control" id="inputForUnit" v-model="part.qtyRequired" v-on:keyup="changeIngredient(index,part.qtyRequired)"  placeholder="Quantity for unit">
                             </div>
                             <div class="form-group">
                                 <label for="inputAmmount">Quantity for crafting</label>
@@ -125,7 +126,6 @@ const changeIngredient=(index: number, rateQty:number, e?:Event)=>{
 }
 
 const addIngredient = (nft: Nft) => {
-    debugger
     const cloneNft= Object.assign({},nft)
     if (partNft.value && cloneNft.attributes.category == "resource") {
         if(partNft.value.ingredients==undefined){
@@ -150,6 +150,13 @@ const addEditNft=(part: Nft)=>{
         emit("onchange",true);
     }
     
+}
+
+const setEditComponent=(nft: Nft)=>{
+    stateRtsSA.setEditNft({...nft, qtyRequired:1, quantity:1, x:undefined,y:undefined});
+
+    stateRtsSA.setShowComposition(false);
+    emit("onchange",true);
 }
 
 </script>
