@@ -24,6 +24,8 @@ export default class PlayNodeScene extends Scene {
 
    cameraSpeed = 5;
 
+   disabledKeyBoard=false; 
+
   preload() {
     
     this.assets=this.stateRtsSA.getCraftShips().concat(this.stateRtsSA.getResources());
@@ -76,13 +78,20 @@ export default class PlayNodeScene extends Scene {
 
     this.cursors= this.input.keyboard?.createCursorKeys();
 
-      this.keyA = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      
+    this.activeKeyBoard();
+
+
+  }
+
+  activeKeyBoard(sw: boolean=true){
+    
+      /* this.keyA = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       this.keyS = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.S);
       this.keyD = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-      this.keyW = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-
-
-
+      this.keyW = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.W); */
+    
+    
   }
 
 
@@ -97,18 +106,19 @@ export default class PlayNodeScene extends Scene {
 
   update() {
     
-    if((this.cursors && this.cursors.up.isDown==true) || ( this.keyW && this.keyW.isDown) ){
-      this.cameras.main.scrollY += this.cameraSpeed;
-    }
-    if((this.cursors && this.cursors.down.isDown==true) || (this.keyS && this.keyS.isDown)){
-      this.cameras.main.scrollY -= this.cameraSpeed;
-    }
-    if((this.cursors && this.cursors.right.isDown==true) || (this.keyD && this.keyD.isDown)){
-      this.cameras.main.scrollX += this.cameraSpeed;
-    }
-    if((this.cursors && this.cursors.left.isDown==true) || (this.keyA && this.keyA.isDown)){
-      this.cameras.main.scrollX -= this.cameraSpeed;
-    }
+      if((this.cursors && this.cursors.up.isDown==true) /* || ( this.keyW && this.keyW.isDown) */ ){
+        this.cameras.main.scrollY += this.cameraSpeed;
+      }
+      if((this.cursors && this.cursors.down.isDown==true) /* || (this.keyS && this.keyS.isDown) */){
+        this.cameras.main.scrollY -= this.cameraSpeed;
+      }
+      if((this.cursors && this.cursors.right.isDown==true) /* || (this.keyD && this.keyD.isDown) */){
+        this.cameras.main.scrollX += this.cameraSpeed;
+      }
+      if((this.cursors && this.cursors.left.isDown==true) /* || (this.keyA && this.keyA.isDown) */){
+        this.cameras.main.scrollX -= this.cameraSpeed;
+      }
+    
   }
 
 
@@ -128,6 +138,7 @@ export default class PlayNodeScene extends Scene {
     //const talentData=this.stateRtsSA.getShips();
     const editNft=this.stateRtsSA.getEditNft();
     if(editNft){
+      this.disabledKeyBoard=false;
       this.createNode(editNft);
     }
       
@@ -173,7 +184,8 @@ export default class PlayNodeScene extends Scene {
         if (timeDiff < doubleClickThreshold) {
           //text.setText('Doble clic detectado');
           this.stateRtsSA.setEditPart(data);
-        this.stateRtsSA.setShowComposition(true);
+          this.stateRtsSA.setShowComposition(true);
+          
         } else {
           //text.setText('Clic simple');
         }
@@ -300,7 +312,9 @@ export default class PlayNodeScene extends Scene {
   }
 
   openConfigWindow(){
+    
     this.stateRtsSA.setShowConfig(true);
+    //this.disabledKeyBoard=true;
   }
 
 }

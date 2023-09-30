@@ -4,9 +4,10 @@ This project for community for manage resources this metaverse
 ![Fimbul Mamba EX](./src//assets/sa/Screenshot%202023-09-30%20alle%2013.43.37.png)
 [Config ship craft Fimbul Mamba EX](./src/assets/sa/Fimbul%20mamba%20EX.json) 
 
+
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+[VSCode](https://code.visualstudio.com/) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
 
 ## Customize configuration
