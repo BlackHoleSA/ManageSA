@@ -4,7 +4,7 @@
         <template v-slot:header>
             <div class="d-flex ms-2">
                 <h5 class="ms-0" v-if="partNft">
-                    Compositions {{ partNft.name }}
+                    Compositions {{ partNft.name }} units {{ partNft.quantity }}
                 </h5>
             </div>
         </template>
@@ -12,14 +12,19 @@
 
         <div class="row">
             <div class="col-8">
-                <div class="card-group" v-if="partNft">
-                    <div class="card" v-for="part of partNft.ingredients">
+                <div class="d-flex flex-wrap" v-if="partNft">
+                    <div class="card" v-for="(part, index) of partNft.ingredients">
                         <div class="card-header">{{part.name}}</div>
                         <img :src="part.image" class="card-img-top maximage" alt="...">
                         <div class="card-body">
                             <div class="form-group">
+                                <label for="inputForUnit">Required for unit.</label>
+                                {{part.qtyRequired}}
+                                <input type="text" class="form-control" id="inputForUnit" v-model="part.qtyRequired" v-on:keyup="changeIngredient(index,part.qtyRequired)"  placeholder="Quantity for unit">
+                            </div>
+                            <div class="form-group">
                                 <label for="inputAmmount">Quantity for crafting</label>
-                                <input type="number" class="form-control" id="inputAmmount" v-model="part.quantity"  placeholder="Quantity">
+                                <input type="number" readonly class="form-control" id="inputAmmount" :value="part.quantity"  placeholder="Quantity">
                             </div>
                         </div>
                     </div>
@@ -70,7 +75,7 @@
     </Modal>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import Modal from './../../widgets/modal.vue';
 import { useStoreAtlas } from '@/stores/storeAtlas';
 import type { Nft } from '@/models/nft';
@@ -93,6 +98,31 @@ const emit = defineEmits<{
 watch(search, (newVal, _) => {
     materials.value = stateRtsSA.getNfts(newVal);
 })
+
+/* watch(()=>partNft.value?.ingredients,(newVal,_)=>{
+    console.log('modificado')
+    if(newVal ){
+        newVal.forEach(item=>{
+            item.quantity=(partNft.value!.quantity??1) * (item.qtyRequired??1);
+        });
+    }
+}) */
+watchEffect(() => {
+  if (partNft.value) {
+    // do something when data is loaded
+    console.log('modificadoss');
+    
+  }
+  console.log('hahah');
+})
+
+const changeIngredient=(index: number, rateQty:number, e?:Event)=>{
+    console.log(e);
+    partNft.value!.ingredients![index].quantity=(partNft.value!.quantity??1) * rateQty;
+    /* partNft.value!.ingredients!.forEach(item=>{
+        item.quantity=(partNft.value!.quantity??1) * (item.qtyRequired??1);
+    }); */
+}
 
 const addIngredient = (nft: Nft) => {
     debugger

@@ -1,6 +1,7 @@
 # Configuration craft item Star Atlas
 
 This project for community for manage resources this metaverse
+![Fimbul Mamba EX](./src//assets/sa/Screenshot%202023-09-30%20alle%2013.43.37.png)
 
 ## Recommended IDE Setup
 
