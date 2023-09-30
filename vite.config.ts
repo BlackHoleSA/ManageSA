@@ -13,5 +13,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base:'StarAtlasSA/ManageSA'
+  base:'https://github.com/arawipacha/StarAtlasSA/ManageSA/'
 })
