@@ -13,5 +13,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base:'https://staratlassa.github.io/ManageSA'
+  //base:'https://arawipacha.github.io/'
 })
