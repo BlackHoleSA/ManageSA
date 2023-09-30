@@ -1,0 +1,74 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "BattleMap.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "Tilesets"
+    ],
+    "fileStates": {
+        "BattleMap.tmx": {
+            "scale": 1.01,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 771.7821782178216,
+                "y": 409.90099009900985
+            }
+        },
+        "Tilesets/1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilesets/Outdoor.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilesets/desert-ornaments.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilesets/ice_.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Tilesets/tundra_ [bridgeAnimatedTiles].tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ice_.tsx": {
+            "scaleInDock": 1
+        },
+        "igloo_.tsx": {
+            "scaleInDock": 1
+        },
+        "tundra_.tsx": {
+            "scaleInDock": 1
+        },
+        "tundra_1.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "/Users/yaku/Downloads/SSCAP Tileset",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "openFiles": [
+        "BattleMap.tmx"
+    ],
+    "project": "Tundra.tiled-project",
+    "recentFiles": [
+        "BattleMap.tmx",
+        "Tilesets/Outdoor.tsx",
+        "Tilesets/desert-ornaments.tsx",
+        "Tilesets/ice_.tsx",
+        "Tilesets/tundra_ [bridgeAnimatedTiles].tsx",
+        "Tilesets/1.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}
