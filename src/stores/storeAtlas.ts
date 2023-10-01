@@ -211,7 +211,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
 
 
   const actionGetProgramIDSolana=async (programIsString: string)=>{
-    const connection = new web3.Connection('https://snowy-empty-friday.solana-mainnet.discover.quiknode.pro/38a93b3f889c0fbeaf6df2df65de02fbbbc14c5a/');
+    const connection = new web3.Connection('solana main beta net');
     //const programId = new web3.PublicKey("hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX");
     //hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX
     //const walletAddressOwner = new web3.PublicKey('hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX'); // esta configuracion permite vizualizar el 
