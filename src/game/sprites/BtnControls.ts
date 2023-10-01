@@ -57,6 +57,20 @@ export class BtnControls extends Phaser.GameObjects.Container{
           
           scene.updateNftComponent();
         });
+
+        const btnGetSolana =  scene.add.text(750,0, 'solana', {
+          fontSize: '16px',
+          backgroundColor: '#3498db',
+          padding: {
+            x: 10,
+            y: 10
+          }
+        })
+        .setInteractive()
+        .on('pointerup', () => {
+          
+          scene.interactionSolana();
+        });
       
       this.add([btnIniciar, btnCrearComponente,]);
       

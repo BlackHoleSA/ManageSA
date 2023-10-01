@@ -31,7 +31,7 @@
                         <div class="card-header"> Download</div>
                         <!-- <img :src="part.image" class="card-img-top maximage" alt="..."> -->
                         <div class="card-body">
-                            <button class="btn btn-primary" @click="stateRtsSA.downloadNftEditAsJson()">
+                            <button class="btn btn-primary" @click="stateRtsSA.downloaItemsAsJson()">
                                 Guarda tu configuracio'n
                             </button>
                         </div>
@@ -92,7 +92,7 @@ const changeFile=(e:Event)=>{
             // Analiza el contenido JSON y almacénalo en una variable
             try {
                 const jsonData = JSON.parse(jsonContent);
-                stateRtsSA.setEditNft(jsonData);
+                stateRtsSA.stateAtlas.items=jsonData;
                 emit("onchange", true);
             } catch (error) {
                 console.error("Error al analizar el archivo JSON:", error);

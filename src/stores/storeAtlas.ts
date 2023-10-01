@@ -4,7 +4,7 @@ import type { Nft } from '@/models/nft';
 import { downloadJson, fecthResourceSA } from './api';
 import { reactive } from 'vue';
 import { uniqueID } from '@/utils/uniqueID';
-
+import * as web3 from "@solana/web3.js";
 
 interface State {
   items: Nft[]; 
@@ -15,6 +15,7 @@ interface State {
   showComposition: boolean;
   showConfig: boolean
   showUpdateComponent:boolean;
+  showSolana:boolean;
   message?: string;
 }
 
@@ -29,6 +30,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     partComponent:undefined,
     showComposition: false,
     showUpdateComponent:false,
+    showSolana: false,
     showConfig: false
   });
 
@@ -141,6 +143,10 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
       if( typeof (item.qtyRequired as any) === 'string'){
         item.qtyRequired=Number.parseInt(`${item.qtyRequired}`);
       }
+      if(item.attributes.class=='raw material'){
+        item.x=undefined;
+        item.y=undefined;
+      }
       item.quantity = nft.quantity * item.qtyRequired;
       updateRecursive(item);
     })
@@ -198,9 +204,69 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   const setShowConfig=(sw:boolean)=>stateAtlas.showConfig=sw;
   const setShowComponent=(sw:boolean)=>stateAtlas.showUpdateComponent=sw;
 
-  const downloadNftEditAsJson = (filename:string= "miarchivo.json")=>downloadJson(stateAtlas.editNft,filename);
+  const downloaItemsAsJson = (filename:string= "miarchivo.json")=>downloadJson(stateAtlas.items,filename);
 
   const downloadComponentsAsJson = (filename:string= "materialsAndShips.json")=>downloadJson(stateAtlas.items,filename);
+
+
+
+  const actionGetProgramIDSolana=async (programIsString: string)=>{
+    const connection = new web3.Connection('https://snowy-empty-friday.solana-mainnet.discover.quiknode.pro/38a93b3f889c0fbeaf6df2df65de02fbbbc14c5a/');
+    //const programId = new web3.PublicKey("hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX");
+    //hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX
+    //const walletAddressOwner = new web3.PublicKey('hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX'); // esta configuracion permite vizualizar el 
+    const walletAddressOwner = new web3.PublicKey('hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX'); // esta configuracion permite vizualizar el 
+    const accountFilter:web3.TokenAccountsFilter= {
+      programId:new web3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+      
+    } 
+    const commited:web3.Commitment='confirmed'
+    //connection._buildArgs(connection)
+    /* connection._buildArgs(
+      [walletAddressOwner.toBase58()],
+      undefined,
+      'jsonParsed',
+      undefined
+    ); */
+    try {
+      //getTokenAccountsByOwner
+      const accountInfo = await connection.getParsedTokenAccountsByOwner(walletAddressOwner,accountFilter,commited);
+
+     /*  "params": [
+        "hUSpKkJ15sHZnzoLc5ocmHUTZ2djGx1Anyh12JEZVLX",
+        {
+            "programId": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+            "encoding": "jsonParsed",
+            "commitment": "confirmed"
+        }
+    ] */
+  
+      if (accountInfo) {
+        // Inspecciona el contenido de la cuenta para identificar tus NFTs
+        // Dependiendo de cómo estén almacenados, tendrás que analizar los datos de la cuenta
+
+        console.log(accountInfo);
+        alert(`'Información de la cuenta:', ${JSON.stringify(accountInfo)}`)
+      } else {
+        alert('No se encontró información de la cuenta.');
+      }
+    } catch (error) {
+      alert(`'Error al obtener información de la cuenta:', ${error}`);
+    }
+/*     const programAccounts = await connection.getProgramAccounts(programId);
+
+      if (programAccounts.length > 0) {
+        console.log('Cuentas asociadas al programa:', programAccounts);
+        alert(`Cuentas asociadas al programa:, ${programAccounts}`)
+      } else {
+        console.log('No se encontraron cuentas asociadas al programa.');
+        alert(`No se encontraron cuentas asociadas al programa.`)
+      } */
+
+  }
+
 
 
   return {
@@ -230,7 +296,9 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     setShowConfig,
     setShowComponent,
     addIngredientToNft,
-    downloadNftEditAsJson,
-    updateNftComponent
+    downloaItemsAsJson,
+    updateNftComponent,
+
+    actionGetProgramIDSolana
   }
 })

@@ -49,12 +49,7 @@ export default class PlayNodeScene extends Scene {
 
     this.assets.forEach((item, index) => {
       const nft = new MaterialSA(this, 100, (index + 1) * 100, item,'MATERIALSA', () => {
-        
         this.stateRtsSA.setEditNftByid(item.id);
-
-        //const editNft=this.stateRtsSA.getEditNft();
-        
-        //this.stateRtsSA.updateNftComponent();
         this.createJson();
         
         
@@ -68,8 +63,8 @@ export default class PlayNodeScene extends Scene {
         gameObject.y = dragY;
         const nft=gameObject.getData('item');
         if(nft){
-            nft.x=dragX;
-            nft.y=dragY;
+            /* nft.x=dragX;
+            nft.y=dragY; */
         }
       }
 
@@ -132,6 +127,7 @@ export default class PlayNodeScene extends Scene {
   createJson() {
     this.clearChildrenByDataKey('NODE-EDIT-NFT');
     this.clearChildrenByDataKey('NODES');
+    this.clearChildrenByDataKey('RESUMEN');
     this.connections.forEach((connection: Phaser.GameObjects.Graphics) => {
       connection.clear();
     });
@@ -141,7 +137,7 @@ export default class PlayNodeScene extends Scene {
     const editNft=this.stateRtsSA.getEditNft();
     const totalGroupMaterialRaw= this.stateRtsSA.getTotalMaterialRaw();
     console.log(totalGroupMaterialRaw);
-    let resultResourceraw='Recursos Necesarios  { \n ';
+    let resultResourceraw='Recursos Necesarios { \n ';
     if(totalGroupMaterialRaw!=null){
       for (const symbol in totalGroupMaterialRaw) {
         console.log(`${symbol} : ${totalGroupMaterialRaw[symbol]}`);
@@ -149,18 +145,18 @@ export default class PlayNodeScene extends Scene {
       }
     }
 
-    resultResourceraw+= " }";
+    resultResourceraw+= "}";
 
     if(editNft){
       //this.disabledKeyBoard=false;
-      const btnIniciar =  this.add.text(300,0, resultResourceraw, {
+      const btnIniciar =  this.add.text(280,0, resultResourceraw, {
         fontSize: '16px',
         //backgroundColor: '#0c09c8',
         padding: {
           x: 10,
           y: 10
         },
-      });
+      }).setData('RESUMEN', true);
       
       
       this.createNode(editNft);
@@ -348,4 +344,9 @@ export default class PlayNodeScene extends Scene {
 
   }
 
+
+
+  interactionSolana(){
+    this.stateRtsSA.stateAtlas.showSolana=true;
+  }
 }
