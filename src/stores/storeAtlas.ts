@@ -27,7 +27,7 @@ interface State {
 
 export const useStoreAtlas = defineStore('staratlas',()=> {
   /**STATE */
-  const SHIPSYMBOLS=["CALMAX","FBLMEX","VZUSSO","FBLBBU","PX4","FBLMAM"];
+  const SHIPSYMBOLS=["CALMAX","FBLMEX","VZUSSO","FBLBBU","PX4","FBLMAM","OGKATU","PR6","FBLEUN"];
   const stateAtlas = reactive<State>({
     items:[],
     //materials:[],
@@ -44,7 +44,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
   const getNfts=(search:string='')=>search=='' ? stateAtlas.items : stateAtlas.items.filter(item=>item.name.toUpperCase().includes(search.toUpperCase()));
   const getResources=()=>stateAtlas.items.filter(item=>item.attributes.category=="resource");
   const getResourceMaterialRaw=()=>stateAtlas.items.filter(item=>item.attributes.class=="raw material");
-  const getComponents=()=>stateAtlas.items.filter(item=>item.attributes.class!="raw material" && item.attributes.class!="ship" && !SHIPSYMBOLS.includes(item.symbol));
+  const getComponents=()=>stateAtlas.items.filter(item=>item.attributes.class!="raw material" && item.attributes.category!="ship" && !SHIPSYMBOLS.includes(item.symbol));
   const getCraftShips=()=>stateAtlas.items.filter(item=>SHIPSYMBOLS.includes(item.symbol));
 
   const getShowComposition=()=>{return stateAtlas.showComposition};
@@ -87,11 +87,13 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     
   }
 
-  const setEditNftByid=(nft_id: string)=>{
-    const index = stateAtlas.items.findIndex(item=>item.id==nft_id);
+  const setEditNftByid=(nft: Nft)=>{
+    const index = stateAtlas.items.findIndex(item=>item.id==nft.id);
       if(index>-1){
         setEditNft(stateAtlas.items[index]);
-        
+      }else{
+        stateAtlas.items.push(nft);
+        setEditNft(nft);
       }
   }
 

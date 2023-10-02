@@ -49,7 +49,7 @@ export default class PlayNodeScene extends Scene {
 
     this.assets.forEach((item, index) => {
       const nft = new MaterialSA(this, 100, (index + 1) * 100, item,'MATERIALSA', () => {
-        this.stateRtsSA.setEditNftByid(item.id);
+        this.stateRtsSA.setEditNftByid(item);
         this.createJson();
         
         
