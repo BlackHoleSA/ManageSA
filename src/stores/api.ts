@@ -38,7 +38,12 @@ export const downloadJson=(data:any, fileName: string)=>{
     URL.revokeObjectURL(url);
 }
 
-/* // Ejemplo de uso:
-var myArray = [1, 2, 3, 4, 5];
-downloadArrayAsJson(myArray, "miarchivo.json");
- */
+
+export const loadData=async()=>{
+  return await fetch('./@ItemsSA.json').then(res=>{
+    return res.json();
+    }).then(res=>{
+      return res;
+        //console.log(res);
+    })
+}

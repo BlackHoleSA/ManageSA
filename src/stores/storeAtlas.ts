@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import type { Nft } from '@/models/nft';
-import { downloadJson, fecthResourceSA } from './api';
+import { downloadJson, fecthResourceSA, loadData } from './api';
 import { reactive } from 'vue';
 import { uniqueID } from '@/utils/uniqueID';
 import * as web3 from "@solana/web3.js";
@@ -59,7 +59,7 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
     
   /**ACTIONS */
   const loadNftSA=()=>{
-      fecthResourceSA('raw material').then(res=>{
+      /* fecthResourceSA('raw material').then(res=>{
         if(res instanceof Array){
 
           stateAtlas.items=res.filter(item=>
@@ -67,9 +67,13 @@ export const useStoreAtlas = defineStore('staratlas',()=> {
               item.attributes.category=="resource" 
           );
 
-          //stateAtlas.materials=stateAtlas.items.filter(item=>item.attributes.category=="resource");
+         
         }
-      });
+      }); */
+
+      loadData().then(res=>{
+        stateAtlas.items=res;
+      })
     };
   
   const setEditNft=(nft:Nft)=>{

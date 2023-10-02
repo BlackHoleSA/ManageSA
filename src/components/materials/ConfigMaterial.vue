@@ -1,5 +1,5 @@
 <template>
-    <Modal :show="showConfig" :header="true" :stylemodal="'modal-md'"
+    <Modal :show="showConfig" :header="true" :stylemodal="'modal-lg'"
         @onchange="stateRtsSA.setShowConfig($event)">
         <template v-slot:header>
             <div class="d-flex ms-2">
@@ -11,7 +11,7 @@
 
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div class="card-group" >
                     <div class="card" >
                         <div class="card-header"> Upload</div>
@@ -25,7 +25,21 @@
                 </div>
 
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div class="card-group" >
+                    <div class="card" >
+                        <div class="card-header"> Cargar modelo gia existente </div>
+                        <!-- <img :src="part.image" class="card-img-top maximage" alt="..."> -->
+                        <div class="card-body">
+                            <p>Si existe algun error en el modelo hagamelo saber para mejorar y publicarlo</p>
+                            <button class="btn btn-success" @click="cargarModelo()">Cargar modelo</button>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="col-4">
                 <div class="card-group" >
                     <div class="card" >
                         <div class="card-header"> Download</div>
@@ -60,7 +74,9 @@ import Modal from './../../widgets/modal.vue';
 import { useStoreAtlas } from '@/stores/storeAtlas';
 import type { Nft } from '@/models/nft';
 import { computed } from 'vue';
+import { loadData } from '@/stores/api';
 
+//import shaderString from './../../assets/sa/@ItemsSA.json?raw'
 
 const stateRtsSA = useStoreAtlas();
 
@@ -106,6 +122,14 @@ const changeFile=(e:Event)=>{
     }
 }
 
+const cargarModelo=()=>{
+    //import * as modelo from './../../assets/sa/@ItemsSA.json'
+    loadData().then(res=>{
+        stateRtsSA.stateAtlas.items=res;
+    });
+    
+    
+}
 
 
 </script>

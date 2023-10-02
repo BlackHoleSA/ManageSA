@@ -63,8 +63,8 @@ export default class PlayNodeScene extends Scene {
         gameObject.y = dragY;
         const nft=gameObject.getData('item');
         if(nft){
-            /* nft.x=dragX;
-            nft.y=dragY; */
+            nft.x=dragX;
+            nft.y=dragY;
         }
       }
 
